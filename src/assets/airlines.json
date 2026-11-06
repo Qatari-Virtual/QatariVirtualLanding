@@ -22,7 +22,7 @@
       "prefix": "A3",
       "hubs": ["LGAV"],
       "color": "#4E6E81",
-      "logo": "https://1000logos.net/wp-content/uploads/2021/04/Aegean-Airlines-logo.png",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/9/94/Aegean_Airlines_Logo_2020.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
       "codeshare_code": "AEE/A3"
     },
     {
@@ -46,7 +46,7 @@
       "prefix": "AMX",
       "hubs": ["MMMX"],
       "color": "#035CF7",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Aeromexico.png/1280px-Aeromexico.png",
+      "logo": "https://static.wikia.nocookie.net/aviation-airport/images/c/cc/Aerom%C3%A9xico_logo.svg.png/revision/latest?cb=20240624151136",
       "codeshare_code": "AMX/AM"
     },
     {
@@ -94,7 +94,7 @@
       "prefix": "JU",
       "hubs": ["LYBE"],
       "color": "#002E5D",
-      "logo": "https://i.logos-download.com/11849/2898-og-122d3fe989062348bd026cbaa5faaced.png/Air_Serbia_logo_logotype_og.png",
+      "logo": "https://static.wikia.nocookie.net/projectflight/images/9/9b/Air_Serbia_logo-en.svg.png/revision/latest?cb=20260525210216",
       "codeshare_code": "ASL/JU"
     },
     {
@@ -342,7 +342,7 @@
       "prefix": "ME",
       "hubs": ["OLBA"],
       "color": "#007B5E",
-      "logo": "https://vectorseek.com/wp-content/uploads/2023/09/MEA-Middle-East-Airlines-Logo-Vector.svg-.png",
+      "logo": "https://logodownload.org/wp-content/uploads/2019/10/middle-east-airlines.png",
       "codeshare_code": "MEA/ME"
     },
     {
@@ -542,8 +542,16 @@
       "prefix": "CES,CUA,CSH",
       "hubs": ["ZSPD", "ZSWZ"],
       "color": "#1B1D80",
-      "logo": "https://cdn.qatarivirtual.xyz/graphics%20and%20images/chinaeastern.png",
+      "logo": "https://thumb.wikimedia.org/wikipedia/en/thumb/6/6b/China_Eastern_Airlines_logo.svg/3840px-China_Eastern_Airlines_logo.svg.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=thumbnail",
       "codeshare_code": "CES/MU"
+    },
+    {
+      "name": "Lufthansa",
+      "prefix": "DLH",
+      "hubs": ["EDDM", "EDDF"],
+      "color": "#0A1D3D",
+      "logo": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b8/Lufthansa_Logo_2018.svg/3840px-Lufthansa_Logo_2018.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
+      "codeshare_code": "DLH/LH"
     }
   ]
 }
