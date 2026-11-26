@@ -128,7 +128,7 @@ const partnerWithFlag = partners.map(p => ({ ...p, isOneWorld: owPrefixes.includ
 </section>
 
 <!-- Fleet -->
-<section class="px-6 py-12 bg-[#fdf8f9]">
+<section class="px-6 py-12 bg-white border-t border-[#ead9df]">
   <div class="max-w-6xl mx-auto">
     <div class="fleet-stack">
       <div class="fleet-marquee" aria-hidden="true">
@@ -193,13 +193,13 @@ const partnerWithFlag = partners.map(p => ({ ...p, isOneWorld: owPrefixes.includ
 <RecentPilots />
 
 <!-- Rank Progression -->
-<section class="px-6 py-12">
+<section class="px-6 py-12 bg-white border-t border-[#ead9df]">
   <div class="max-w-6xl mx-auto text-center">
     <h2 class="text-3xl font-bold text-[#8B1538] mb-2">Climb the Ranks</h2>
     <p class="text-gray-500 mb-8 max-w-xl mx-auto">Every hour unlocks new aircraft and opportunities.</p>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       {rankSteps.map((rank, i) => (
-        <div class="rank-step-card rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+        <div class="rank-step-card rounded-2xl border border-[#ead9df] overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
           <div class="py-4 text-white font-bold text-lg" style={`background: linear-gradient(135deg, ${rank.color}, ${rank.color}dd)`}>
             {rank.name}
             <div class="text-sm font-normal opacity-80 mt-0.5">{rank.range}</div>
@@ -218,13 +218,13 @@ const partnerWithFlag = partners.map(p => ({ ...p, isOneWorld: owPrefixes.includ
 </section>
 
 <!-- Partners -->
-<section class="px-6 py-12 bg-[#fdf8f9]">
+<section class="px-6 py-12 bg-white border-t border-[#ead9df]">
   <div class="max-w-6xl mx-auto text-center">
     <h2 class="text-3xl font-bold text-[#8B1538] mb-2">Our Codeshare Partners</h2>
     <p class="text-gray-500 mb-8 max-w-xl mx-auto">Fly realistic routes with 60+ partner airlines across the globe.</p>
     <div class="partner-grid">
       {partnerWithFlag.map((partner) => (
-        <div class={`partner-item flex items-center justify-center p-3 rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow duration-200 ${partner.isOneWorld ? '' : 'hidden sm:flex'}`}>
+        <div class={`partner-item flex items-center justify-center p-3 rounded-xl bg-white border border-[#ead9df] shadow-sm hover:shadow-md transition-shadow duration-200 ${partner.isOneWorld ? '' : 'hidden sm:flex'}`}>
           <img
             src={partner.logo}
             alt={partner.name}
@@ -242,7 +242,7 @@ const partnerWithFlag = partners.map(p => ({ ...p, isOneWorld: owPrefixes.includ
 </section>
 
 <!-- How It Works -->
-<section class="px-6 py-12 overflow-hidden">
+<section class="px-6 py-12 bg-white border-t border-[#ead9df] overflow-hidden">
   <div class="max-w-5xl mx-auto">
     <h2 class="text-3xl font-bold text-[#8B1538] text-center mb-2">Your Journey</h2>
     <p class="text-gray-500 text-center mb-10 max-w-xl mx-auto">From application to experienced pilot — here's how it works.</p>
@@ -296,7 +296,7 @@ const partnerWithFlag = partners.map(p => ({ ...p, isOneWorld: owPrefixes.includ
 </section>
 
 <!-- FAQ -->
-<section class="px-6 py-12 bg-[#fdf8f9]">
+<section class="px-6 py-12 bg-white border-t border-[#ead9df]">
   <div class="max-w-3xl mx-auto">
     <h2 class="text-3xl font-bold text-[#8B1538] text-center mb-2">Frequently Asked Questions</h2>
     <p class="text-gray-500 text-center mb-8 max-w-xl mx-auto">Everything you need to know about joining and flying with Qatari Virtual.</p>
@@ -352,13 +352,13 @@ const partnerWithFlag = partners.map(p => ({ ...p, isOneWorld: owPrefixes.includ
 </section>
 
 <!-- Testimonials -->
-<section class="px-6 py-12">
+<section class="px-6 py-12 bg-white border-t border-[#ead9df]">
   <div class="max-w-4xl mx-auto text-center">
     <h2 class="text-3xl font-bold text-[#8B1538] mb-2">What Our Pilots Say</h2>
     <p class="text-gray-500 mb-8">Hear from the community that makes Qatari Virtual special.</p>
     <div class="testimonial-grid grid grid-cols-1 md:grid-cols-3 gap-5">
       {testimonials.map((t) => (
-        <div class="testimonial-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow duration-300 text-left flex flex-col">
+        <div class="testimonial-card bg-white border border-[#ead9df] rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow duration-300 text-left flex flex-col">
           <div class="text-4xl text-[#8B1538]/20 font-serif leading-none mb-2">&ldquo;</div>
           <p class="text-sm text-gray-600 leading-relaxed flex-1 mb-4 italic">{t.quote}</p>
           <div class="text-[#8B1538] font-bold text-sm">{t.author} <span class="text-gray-400 font-normal ml-1">{t.callsign}</span></div>
@@ -368,6 +368,42 @@ const partnerWithFlag = partners.map(p => ({ ...p, isOneWorld: owPrefixes.includ
     <a href="/about" class="inline-block mt-6 text-[#8B1538] font-semibold text-sm hover:underline">
       Read more about us &rarr;
     </a>
+  </div>
+</section>
+
+<!-- Instagram Feed -->
+<section class="px-6 py-12 bg-white border-t border-[#ead9df]">
+  <div class="max-w-5xl mx-auto text-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8B1538]/10 text-[#8B1538] text-xs font-bold uppercase tracking-wider mb-3">
+      <span>@if.qatarivirtual</span>
+    </div>
+    <h2 class="text-3xl font-bold text-[#8B1538] mb-2">Latest on Instagram</h2>
+    <p class="text-gray-500 mb-8 max-w-xl mx-auto">
+      Catch highlights from our community flights, events, and fleet photography on Instagram.
+    </p>
+
+    <div class="rounded-2xl border border-[#ead9df] bg-white p-3 sm:p-5 shadow-sm overflow-hidden">
+      <iframe
+        src="https://www.instagram.com/if.qatarivirtual/embed"
+        title="Qatari Virtual Instagram (@if.qatarivirtual)"
+        class="w-full rounded-xl border-0"
+        style="min-height: 480px; background: #fff;"
+        loading="lazy"
+        allowtransparency="true"
+      ></iframe>
+    </div>
+
+    <div class="mt-6">
+      <a
+        href="https://www.instagram.com/if.qatarivirtual/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white shadow-xs transition hover:opacity-95"
+        style="background: linear-gradient(120deg, #8B1538, #6e0038);"
+      >
+        <span>Follow @if.qatarivirtual on Instagram &rarr;</span>
+      </a>
+    </div>
   </div>
 </section>
 

@@ -1,0 +1,471 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CTA from '../components/CTA.astro';
+import { fetchDiscordAnnouncements } from '../utils/discord';
+
+const { posts: initialPosts, configured: initialConfigured } = await fetchDiscordAnnouncements(25);
+---
+
+<Layout
+  title="Announcements | Qatari Virtual"
+  description="Read the latest official announcements, community updates, tours, and operational news directly from the Qatari Virtual Discord."
+>
+  <section class="px-6 py-8 min-h-screen">
+    <div class="max-w-6xl mx-auto">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <div class="flex justify-between items-start gap-4 mb-3">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8B1538]/10 text-[#8B1538] text-xs font-bold uppercase tracking-wider mb-3">
+              <span class="w-2 h-2 rounded-full bg-[#8B1538] animate-pulse"></span>
+              <span id="feedStatusBadge">Live Discord Feed • #announcements</span>
+            </div>
+            <h1 class="text-4xl sm:text-5xl font-bold text-[#8B1538]">Announcements</h1>
+          </div>
+          <p class="text-sm text-gray-500 pt-2 hidden sm:inline">
+            <a href="/" class="text-[#8B1538] font-semibold hover:underline">Home</a> / News / Announcements
+          </p>
+        </div>
+
+        <p class="max-w-3xl text-lg text-gray-600 leading-relaxed">
+          Stay up to date with Qatari Virtual’s latest operational news, community milestones, special events, and tour launches—synced directly from our official Discord announcement channel. Every post links straight to the original Discord message.
+        </p>
+      </div>
+
+      <!-- Toolbar: Search + Filters + Refresh -->
+      <div class="bg-white/95 border border-[#ead9df] rounded-2xl p-4 sm:p-5 mb-8 shadow-xs flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
+        <div class="relative flex-1">
+          <svg
+            class="w-5 h-5 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+          <input
+            id="blogSearchInput"
+            type="text"
+            placeholder="Search announcements, tours, events..."
+            class="w-full pl-11 pr-4 py-2.5 rounded-xl border border-[#ead9df] bg-[#fcfafb] text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#8B1538] transition"
+          />
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            data-filter="all"
+            class="filter-btn is-active px-4 py-2 rounded-xl text-sm font-semibold border border-[#ead9df] transition cursor-pointer"
+          >
+            All Posts
+          </button>
+          <button
+            type="button"
+            data-filter="pinned"
+            class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold border border-[#ead9df] transition cursor-pointer"
+          >
+            Pinned
+          </button>
+          <button
+            type="button"
+            data-filter="media"
+            class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold border border-[#ead9df] transition cursor-pointer"
+          >
+            With Media
+          </button>
+
+          <button
+            id="refreshFeedBtn"
+            type="button"
+            title="Fetch latest messages from Discord"
+            class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-[#fcfafb] text-[#8B1538] border border-[#ead9df] hover:border-[#8B1538] hover:bg-[#fdf8f9] transition cursor-pointer"
+          >
+            <svg id="refreshIcon" class="w-4 h-4 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+            </svg>
+            <span>Refresh</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Setup Notice Banner (Only visible if Discord credentials haven't been added yet) -->
+      <div
+        id="setupNoticeBanner"
+        class={initialConfigured ? "hidden" : "mb-8 rounded-2xl border border-[#8B1538]/25 bg-[#fdf8f9] p-5 text-sm text-gray-700"}
+      >
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <p class="font-bold text-[#8B1538] text-base mb-1">
+              Connect Your Discord Announcements Channel
+            </p>
+            <p class="text-gray-600 leading-relaxed">
+              Showing sample Qatari Virtual announcements. To stream live messages from your Discord server, set{" "}
+              <code class="px-1.5 py-0.5 rounded bg-white border border-[#ead9df] text-[#8B1538] font-mono text-xs">DISCORD_BOT_TOKEN</code>,{" "}
+              <code class="px-1.5 py-0.5 rounded bg-white border border-[#ead9df] text-[#8B1538] font-mono text-xs">DISCORD_CHANNEL_ID</code>, and{" "}
+              <code class="px-1.5 py-0.5 rounded bg-white border border-[#ead9df] text-[#8B1538] font-mono text-xs">DISCORD_GUILD_ID</code>{" "}
+              in your <code class="px-1.5 py-0.5 rounded bg-white border border-[#ead9df] text-[#8B1538] font-mono text-xs">.env</code> (and Cloudflare Pages environment variables).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Posts Grid -->
+      <div id="postsContainer" class="grid grid-cols-1 gap-6"></div>
+
+      <!-- Empty State -->
+      <div
+        id="emptyState"
+        class="hidden text-center py-16 px-6 rounded-2xl border border-[#ead9df] bg-white/90"
+      >
+        <p class="text-xl font-bold text-[#8B1538] mb-2">No announcements match your filter</p>
+        <p class="text-gray-500 text-sm">Try clearing your search query or switching back to All Posts.</p>
+      </div>
+    </div>
+  </section>
+
+  <CTA />
+</Layout>
+
+<style is:global>
+  .filter-btn {
+    background: #fcfafb;
+    color: #4b5563;
+  }
+  .filter-btn:hover {
+    border-color: #8B1538;
+    color: #8B1538;
+  }
+  .filter-btn.is-active {
+    background: linear-gradient(120deg, #8B1538, #6e0038);
+    color: #ffffff;
+    border-color: transparent;
+  }
+
+  .blog-card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    box-shadow: 0 10px 26px rgba(24, 8, 16, 0.05);
+  }
+  .blog-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 36px rgba(139, 21, 56, 0.1);
+    border-color: rgba(139, 21, 56, 0.35);
+  }
+  .blog-card-accent {
+    position: absolute;
+    left: 0;
+    top: 18px;
+    bottom: 18px;
+    width: 4px;
+    border-radius: 9999px;
+    background: linear-gradient(180deg, #8B1538, #4a0c2b);
+  }
+  .discord-jump-btn {
+    background: linear-gradient(120deg, #8B1538, #6e0038);
+    color: white;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  }
+  .discord-jump-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(139, 21, 56, 0.28);
+    opacity: 0.96;
+  }
+</style>
+
+<script define:vars={{ initialPosts, initialConfigured }}>
+  let allPosts = Array.isArray(initialPosts) ? initialPosts : [];
+  let activeFilter = "all";
+  let searchQuery = "";
+
+  const postsContainer = document.getElementById("postsContainer");
+  const emptyState = document.getElementById("emptyState");
+  const searchInput = document.getElementById("blogSearchInput");
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  const refreshBtn = document.getElementById("refreshFeedBtn");
+  const refreshIcon = document.getElementById("refreshIcon");
+  const setupBanner = document.getElementById("setupNoticeBanner");
+  const feedStatusBadge = document.getElementById("feedStatusBadge");
+
+  function escapeHtml(str) {
+    return String(str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function formatDiscordMarkdown(text) {
+    if (!text) return "";
+    let html = escapeHtml(text);
+
+    // Subheadings
+    html = html.replace(/^###\s+(.+)$/gm, '<h4 class="text-base font-bold text-[#8B1538] mt-3 mb-1">$1</h4>');
+    html = html.replace(/^##\s+(.+)$/gm, '<h3 class="text-lg font-bold text-[#8B1538] mt-4 mb-1.5">$1</h3>');
+    html = html.replace(/^#\s+(.+)$/gm, '<h3 class="text-xl font-bold text-[#8B1538] mt-4 mb-2">$1</h3>');
+
+    // Bold, Italic, Underline, Inline code
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-gray-900">$1</strong>');
+    html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    html = html.replace(/__(.+?)__/g, '<u>$1</u>');
+    html = html.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-[#fdf8f9] border border-[#ead9df] text-[#8B1538] font-mono text-xs">$1</code>');
+
+    // Markdown links [label](url)
+    html = html.replace(
+      /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-[#8B1538] font-semibold underline hover:opacity-80">$1</a>'
+    );
+
+    // Bare URLs
+    html = html.replace(
+      /(^|[\s(])(https?:\/\/[^\s<)]+)/g,
+      '$1<a href="$2" target="_blank" rel="noopener noreferrer" class="text-[#8B1538] font-semibold underline break-all hover:opacity-80">$2</a>'
+    );
+
+    // Paragraphs and line breaks
+    return html
+      .split(/\n{2,}/)
+      .map((para) => `<p class="mb-3 last:mb-0 leading-relaxed">${para.replace(/\n/g, "<br />")}</p>`)
+      .join("");
+  }
+
+  function formatDate(isoString) {
+    try {
+      const date = new Date(isoString);
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    } catch {
+      return "";
+    }
+  }
+
+  function formatRelativeTime(isoString) {
+    try {
+      const diffMs = Date.now() - new Date(isoString).getTime();
+      const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      if (days <= 0) return "Today";
+      if (days === 1) return "Yesterday";
+      if (days < 30) return `${days}d ago`;
+      const months = Math.floor(days / 30);
+      if (months < 12) return `${months}mo ago`;
+      return `${Math.floor(months / 12)}y ago`;
+    } catch {
+      return "";
+    }
+  }
+
+  function renderPostCard(post, index) {
+    const isFeatured = index === 0 && activeFilter === "all" && !searchQuery;
+    const pinnedBadge = post.pinned
+      ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#8B1538]/10 text-[#8B1538]">📌 Pinned</span>`
+      : "";
+    const featuredBadge = isFeatured
+      ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#8B1538] text-white">Latest Announcement</span>`
+      : "";
+
+    const imagesHtml =
+      Array.isArray(post.images) && post.images.length > 0
+        ? `<div class="mt-5 grid ${post.images.length > 1 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1"} gap-3">
+            ${post.images
+              .map(
+                (imgUrl) => `
+              <a href="${escapeHtml(imgUrl)}" target="_blank" rel="noopener noreferrer" class="inline-block w-fit max-w-full overflow-hidden rounded-xl border border-[#ead9df] bg-[#fcfafb]">
+                <img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(post.title)}" loading="lazy" class="max-h-[460px] w-auto max-w-full object-contain block hover:scale-[1.01] transition-transform duration-300" />
+              </a>`
+              )
+              .join("")}
+          </div>`
+        : "";
+
+    const embedsHtml =
+      Array.isArray(post.embeds) && post.embeds.length > 0
+        ? post.embeds
+            .filter((e) => e.description || (e.fields && e.fields.length > 0))
+            .map(
+              (emb) => `
+              <div class="mt-4 rounded-xl border border-[#ead9df] bg-[#fcfafb] p-4 border-l-4" style="border-left-color: ${escapeHtml(emb.color || "#8B1538")}">
+                ${emb.title ? `<h4 class="font-bold text-[#8B1538] mb-1">${escapeHtml(emb.title)}</h4>` : ""}
+                ${emb.description ? `<div class="text-sm text-gray-600">${formatDiscordMarkdown(emb.description)}</div>` : ""}
+                ${
+                  Array.isArray(emb.fields) && emb.fields.length > 0
+                    ? `<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                        ${emb.fields
+                          .map(
+                            (f) => `
+                          <div class="bg-white p-2.5 rounded-lg border border-[#ead9df]/70">
+                            <div class="text-xs font-bold text-[#8B1538] uppercase tracking-wider">${escapeHtml(f.name)}</div>
+                            <div class="text-sm text-gray-700 mt-0.5">${formatDiscordMarkdown(f.value)}</div>
+                          </div>`
+                          )
+                          .join("")}
+                      </div>`
+                    : ""
+                }
+              </div>`
+            )
+            .join("")
+        : "";
+
+    const reactionsHtml =
+      Array.isArray(post.reactions) && post.reactions.length > 0
+        ? `<div class="flex flex-wrap items-center gap-1.5">
+            ${post.reactions
+              .map((r) => {
+                const isCustomEmoji = String(r.emoji).startsWith("http");
+                const emojiContent = isCustomEmoji
+                  ? `<img src="${escapeHtml(r.emoji)}" alt="emoji" class="w-4 h-4 object-contain" />`
+                  : `<span>${escapeHtml(r.emoji)}</span>`;
+                return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-[#fdf8f9] border border-[#ead9df] text-gray-700">
+                  ${emojiContent}
+                  <span>${Number(r.count) || 1}</span>
+                </span>`;
+              })
+              .join("")}
+          </div>`
+        : `<div></div>`;
+
+    return `
+      <article class="blog-card rounded-2xl border border-[#ead9df] bg-white/95 backdrop-blur-sm px-6 py-6 md:px-8 md:py-7">
+        <div class="blog-card-accent"></div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div class="flex items-center gap-3">
+            <img
+              src="${escapeHtml(post.author?.avatar || "/images/Logo2.png")}"
+              alt="${escapeHtml(post.author?.name || "Qatari Virtual")}"
+              class="w-10 h-10 rounded-full object-cover border border-[#ead9df] bg-[#fdf8f9]"
+              onerror="this.src='/images/Logo2.png'"
+            />
+            <div>
+              <div class="font-bold text-gray-900 text-sm sm:text-base leading-tight">
+                ${escapeHtml(post.author?.name || "Qatari Virtual Staff")}
+              </div>
+              <div class="text-xs text-gray-500 flex items-center gap-1.5 mt-0.5">
+                <span>${formatDate(post.timestamp)}</span>
+                <span>•</span>
+                <span class="text-[#8B1538] font-medium">${formatRelativeTime(post.timestamp)}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            ${featuredBadge}
+            ${pinnedBadge}
+          </div>
+        </div>
+
+        <h2 class="text-2xl sm:text-3xl font-bold text-[#8B1538] mb-3 leading-snug">
+          ${escapeHtml(post.title)}
+        </h2>
+
+        ${
+          post.body
+            ? `<div class="text-gray-700 text-base leading-relaxed">${formatDiscordMarkdown(post.body)}</div>`
+            : ""
+        }
+
+        ${embedsHtml}
+        ${imagesHtml}
+
+        <div class="mt-6 pt-4 border-t border-[#ead9df]/70 flex flex-wrap items-center justify-between gap-4">
+          ${reactionsHtml}
+
+          <a
+            href="${escapeHtml(post.discordUrl)}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="discord-jump-btn inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold shadow-xs"
+          >
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286z"/>
+            </svg>
+            <span>View in Discord</span>
+          </a>
+        </div>
+      </article>
+    `;
+  }
+
+  function renderFeed() {
+    if (!postsContainer || !emptyState) return;
+
+    const filtered = allPosts.filter((post) => {
+      if (activeFilter === "pinned" && !post.pinned) return false;
+      if (activeFilter === "media" && (!post.images || post.images.length === 0)) return false;
+
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        const inTitle = (post.title || "").toLowerCase().includes(q);
+        const inBody = (post.body || "").toLowerCase().includes(q);
+        const inAuthor = (post.author?.name || "").toLowerCase().includes(q);
+        return inTitle || inBody || inAuthor;
+      }
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      postsContainer.innerHTML = "";
+      emptyState.classList.remove("hidden");
+    } else {
+      emptyState.classList.add("hidden");
+      postsContainer.innerHTML = filtered.map((p, idx) => renderPostCard(p, idx)).join("");
+    }
+  }
+
+  async function fetchLiveAnnouncements() {
+    if (refreshIcon) {
+      refreshIcon.classList.add("animate-spin");
+    }
+    try {
+      const response = await fetch("/api/announcements");
+      if (response.ok) {
+        const data = await response.json();
+        if (data.configured && Array.isArray(data.posts) && data.posts.length > 0) {
+          allPosts = data.posts;
+          if (setupBanner) setupBanner.classList.add("hidden");
+          if (feedStatusBadge) {
+            feedStatusBadge.textContent = "Live Discord Feed • #announcements";
+          }
+          renderFeed();
+        }
+      }
+    } catch {
+      // In local astro dev without wrangler, fallback to build/dev-fetched initialPosts
+    } finally {
+      if (refreshIcon) {
+        setTimeout(() => refreshIcon.classList.remove("animate-spin"), 300);
+      }
+    }
+  }
+
+  // Initial render
+  renderFeed();
+  // Live fetch from Cloudflare Pages function (Option 2)
+  fetchLiveAnnouncements();
+
+  // Search listener
+  searchInput?.addEventListener("input", (e) => {
+    searchQuery = e.target.value.trim();
+    renderFeed();
+  });
+
+  // Filter buttons
+  filterButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      filterButtons.forEach((b) => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      activeFilter = btn.getAttribute("data-filter") || "all";
+      renderFeed();
+    });
+  });
+
+  // Manual refresh button
+  refreshBtn?.addEventListener("click", () => {
+    fetchLiveAnnouncements();
+  });
+</script>
